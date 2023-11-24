@@ -1,0 +1,27 @@
+.nav-container{
+    background-color:var(--background);
+    height: 8vh;
+    width: 100%;
+}
+
+
+
+.nav-items-container{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    color: white;
+    padding: 0;
+    
+}
+
+.nav-logo{
+    color: white;
+}
+
+.item{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
