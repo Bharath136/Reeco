@@ -12,8 +12,6 @@ const ShoppingCartIcon = styled(TfiShoppingCart)`
 
 
 const Navbar = () => {
-
-
     return (
         <NavContainer>
             <nav class="container navbar navbar-expand-lg " style={{color:'white',padding:'10px'}}>
