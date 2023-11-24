@@ -37,7 +37,8 @@ import {
     PopupContainer,
     PopupContent,
     TableData,
-    TableHead
+    TableHead,
+    StatusButton
 } from './StyledComponents';
 
 const StyledOrders = () => {
@@ -186,15 +187,15 @@ const StyledOrders = () => {
                         ))}
                     </OrderDetailBoxContainer>
                 </Container>
-                <OrderProductsWrapper className='container p-5 '>
+                <OrderProductsWrapper className='container'>
                     <Container className='d-flex align-items-center justify-content-between'>
                         <SearchInputContainer>
                             <StyledSearchInput type='search' placeholder='Search...' onChange={onChangeSearchTerm} value={searchTerm} />
                             <CgSearch style={{ color: `var(--text)` }} size={20} />
                         </SearchInputContainer>
-                        <Container>
+                        <Container className='d-flex align-items-center' style={{gap:"40px"}}>
                             <BackButton>Add item</BackButton>
-                            <LuPrinter style={{ color: `var(--background)` }} size={25} />
+                            <LuPrinter style={{ color: `var(--background)` }} size={22} />
                         </Container>
                     </Container>
                     <ProductsContainer>
@@ -219,16 +220,16 @@ const StyledOrders = () => {
                                         <TableData>${product.price}</TableData>
                                         <TableData>{product.quantity}</TableData>
                                         <TableData>${product.quantity * product.price}</TableData>
-                                        <TableData>{product.status !== null && <div className='d-flex align-items-center justify-content-center p-1 m-3' style={{
+                                        <TableData>{product.status !== null && <div className='d-flex align-items-center justify-content-center p-1 m-3'><StatusButton style={{
                                             borderRadius: '20px', color: 'white', backgroundColor: product.status === 'Missing-Urgent'
                                                 ? 'red'
                                                 : product.status === 'Missing'
-                                                    ? 'orange'
-                                                    : 'green'
-                                        }}>{product.status}</div>}</TableData>
+                                                    ? `var(--orange)`
+                                                    : `var(--light-green)`
+                                        }}>{product.status}</StatusButton></div>}</TableData>
                                         <TableData>
                                             <StatusContainer>
-                                                <FaCheck style={{ color: product.status === 'Approved' && 'green', cursor: 'pointer' }} onClick={() => onApproveItem(product.product_id)} size={20} />
+                                                <FaCheck style={{ color: product.status === 'Approved' && `var(--light-green)`, cursor: 'pointer' }} onClick={() => onApproveItem(product.product_id)} size={20} />
                                                 <IoClose
                                                     style={{
                                                         cursor: 'pointer',
@@ -236,7 +237,7 @@ const StyledOrders = () => {
                                                             product.status === 'Missing-Urgent'
                                                                 ? 'red'
                                                                 : product.status === 'Missing'
-                                                                    ? 'orange'
+                                                                    ? `var(--orange)`
                                                                     : ''
                                                     }}
                                                     onClick={() => onMissingItem(product)}

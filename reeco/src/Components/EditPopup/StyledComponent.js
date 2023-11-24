@@ -42,7 +42,7 @@ export const MinusButton = styled.button`
     justify-content:center;
     height:30px;
     width:30px;
-    background-color:green;
+    background-color:var(--light-green);
     color:white;
     border-radius:20px;
     outline:none;
@@ -55,7 +55,7 @@ export const PlusButton = styled.button`
     justify-content:center;
     height:30px;
     width:30px;
-    background-color:green;
+    background-color:var(--light-green);
     color:white;
     border-radius:20px;
     outline:none;

@@ -98,7 +98,7 @@ export const OrderBoxHeadingStyled = styled(OrderBoxHeading)`
 `;
 
 export const OrderItemsContainer = styled.div`
-  height: 80vh;
+  height: 78vh;
   overflow: auto;
 `;
 
@@ -106,6 +106,10 @@ export const OrderProductsWrapper = styled.div`
   background-color: white;
   border: 1px solid var(--border);
   border-radius: 10px;
+  padding:40px;
+  @media screen and (max-width: 768px) {
+    padding:20px
+  }
 `;
 
 export const OrderItemsTable = styled.table`
@@ -167,14 +171,20 @@ export const SearchInputContainer = styled.div`
   display: flex;
   align-items: center;
   border-radius: 30px;
+  @media screen and (max-width: 768px) {
+    width:200px;
+  }
 `;
 
 export const StyledSearchInput = styled.input`
-  width: 82%;
+  width: 86%;
   padding: 10px;
   border: none;
   outline: none;
   border-radius: 30px;
+  @media screen and (max-width: 768px) {
+    padding: 6px 12px;
+  }
 `;
 
 export const ProductsContainer = styled.div`
@@ -185,8 +195,6 @@ export const ProductsContainer = styled.div`
 
 export const Container = styled.div`
 `
-
-
 
 //popup
 export const PopupContainer = styled.div`
@@ -208,106 +216,18 @@ export const PopupContent = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
+
+export const StatusButton = styled.button`
+outline: none;
+  border: none;
   cursor: pointer;
-  font-size: 20px;
-  color: #333;
-`;
-
-export const PopupButton = styled.button`
-  padding: 10px;
-  font-size: 16px;
-`;
-
-export const PopupImage = styled.img`
-    width:160px;
-`
-
-export const ActionsContainer = styled.div`
-`;
-
-export const PopupInput = styled.input`
-  margin-bottom: 10px;
-  padding:6px;
-  width:100px;
-  border-radius:10px;
-  outline:none;
-  border:1px solid var(--border);
-`;
-
-export const PopupActions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-
-  button {
-    margin-left: 10px;
-  }
-`;
-
-export const MinusButton = styled.button`
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    height:30px;
-    width:30px;
-    background-color:green;
-    color:white;
-    border-radius:20px;
-    outline:none;
-    border:none;
-`
-
-export const PlusButton = styled.button`
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    height:30px;
-    width:30px;
-    background-color:green;
-    color:white;
-    border-radius:20px;
-    outline:none;
-    border:none;
-`
-
-export const ReasonList = styled.ul`
-  display:flex;
-  align-items:center;
-  list-style-type:none;
-  padding:0px;
-  gap:10px;
-`
-
-export const ReasonItem = styled.button`
-  border:1px solid var(--border);
-  border-radius:30px;
-  padding:6px 10px;
-  display:flex;
-  align-items:center;
-  font-size:12px
-`
-
-export const SendButton = styled.button`
-  background-color:var(--background);
-  padding:6px 16px;
-  border-radius:30px;
-  outline:none;
-  border:none;
-  color:white;
+  padding: 2px 14px;
+  border-radius: 20px;
+  font-size:15px;
 `
 
 
-export const CancelButton = styled.button`
-  background-color:transparent;
-  padding:6px 16px;
-  border-radius:30px;
-  outline:none;
-  border:none;
-  color:var(--background)
-`
+
 
 export const TableBody = styled.tbody`
 `
@@ -316,4 +236,5 @@ export const TableHead = styled.th`
 `
 
 export const TableData = styled.td`
+
 `
