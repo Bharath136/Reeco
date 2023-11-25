@@ -157,6 +157,7 @@ const StyledOrders = () => {
 
     // Function to handle the edit of a product
     const handleEdit = async () => {
+        console.log(status)
         try {
             await axios.put(`${domain}/products/${selectedProduct._id}`, {...editedProduct, status });
             closePopup();
@@ -208,7 +209,7 @@ const StyledOrders = () => {
 
 
     const onIncreaseQuantity = () => {
-        console.log("ljlk")
+        setStatus("Quantity updated");
         setEditedProduct((prevProduct) => {
             // Assuming editedProduct is an object and quantity is a number
             return {
@@ -219,6 +220,7 @@ const StyledOrders = () => {
     };
 
     const onDecreaseQuantity = () => {
+        setStatus("Quantity updated");
         setEditedProduct((prevProduct) => {
             // Assuming editedProduct is an object and quantity is a number
             if (prevProduct.quantity > 1) {
