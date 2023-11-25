@@ -50,7 +50,6 @@ const StyledOrders = () => {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [isMissingProduct, setIsMissingProduct] = useState(false);
     const [status, setStatus] = useState('');
-    const [loading, setLoading] = useState(false)
 
     const [editedProduct, setEditedProduct] = useState({
         price: selectedProduct.price,
@@ -87,11 +86,11 @@ const StyledOrders = () => {
 
     // Function to fetch products from the server
     const fetchProducts = async () => {
-        setLoading(true)
+       
         try {
             const response = await axios.get(`${domain}/products`);
             if(response.status === 200){
-                setLoading(false)
+               
             }
             // Assuming response.data is an array of products with a property '_id'
             // const sortedData = response.data.sort((a, b) => a._id - b._id);
