@@ -41,7 +41,6 @@ import {
     TableHead,
     StatusButton
 } from './StyledComponents';
-
 const domain = 'https://movie-ticket-pntf.onrender.com'
 
 const StyledOrders = () => {
