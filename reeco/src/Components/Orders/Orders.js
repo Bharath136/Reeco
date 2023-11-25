@@ -42,6 +42,8 @@ import {
     StatusButton
 } from './StyledComponents';
 
+const domain = 'https://movie-ticket-pntf.onrender.com'
+
 const StyledOrders = () => {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -68,7 +70,7 @@ const StyledOrders = () => {
     // Function to add product with default values
     const onAddItem = async () => {
         try {
-            await axios.post('https://movie-ticket-pntf.onrender.com/products', {
+            await axios.post(`${domain}/products`, {
                 image_url: avacadoImage,
                 product_name: "Chicken Breast Fillets, Boneless marinated 6 Ounce Raw, Invivid",
                 brand: "Hormel Black Label",
@@ -85,7 +87,7 @@ const StyledOrders = () => {
     // Function to fetch products from the server
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('https://movie-ticket-pntf.onrender.com/products');
+            const response = await axios.get(`${domain}/products`);
 
             // Assuming response.data is an array of products with a property '_id'
             // const sortedData = response.data.sort((a, b) => a._id - b._id);
@@ -118,7 +120,7 @@ const StyledOrders = () => {
     // Function to approve an item
     const onApproveItem = async (id) => {
         try {
-            await axios.put(`https://movie-ticket-pntf.onrender.com/products/${id}`, { status: "Approved" });
+            await axios.put(`${domain}/products/${id}`, {...editedProduct, status: "Approved" });
             fetchProducts();
         } catch (error) {
             console.error('Error approving item:', error);
@@ -135,7 +137,7 @@ const StyledOrders = () => {
     // Function to mark an item as missing urgent
     const onYes = async (id) => {
         try {
-            await axios.put(`https://movie-ticket-pntf.onrender.com/products/${id}`, { status: "Missing-Urgent" });
+            await axios.put(`${domain}/products/${id}`, { ...editedProduct, status: "Missing-Urgent" });
             fetchProducts();
             closePopup();
         } catch (error) {
@@ -146,7 +148,7 @@ const StyledOrders = () => {
     // Function to mark an item as missing (not urgent)
     const onNotUrgent = async (id) => {
         try {
-            await axios.put(`https://movie-ticket-pntf.onrender.com/products/${id}`, { status: "Missing" });
+            await axios.put(`${domain}/products/${id}`, { ...editedProduct, status: "Missing" });
             fetchProducts();
             closePopup();
         } catch (error) {
@@ -157,7 +159,7 @@ const StyledOrders = () => {
     // Function to handle the edit of a product
     const handleEdit = async () => {
         try {
-            await axios.put(`https://movie-ticket-pntf.onrender.com/products/${selectedProduct._id}`, { ...editedProduct, status });
+            await axios.put(`${domain}/products/${selectedProduct._id}`, {...editedProduct, status });
             closePopup();
             fetchProducts();
         } catch (error) {
