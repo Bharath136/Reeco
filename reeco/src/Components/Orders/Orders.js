@@ -8,8 +8,8 @@ import { CgSearch } from "react-icons/cg";
 import { LuPrinter } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
-import avacadoImage from '../../images/Avocado Hass.jpg';
-// import apple from '../../images/Apple Green Smith.png'
+// import avacadoImage from '../../images/Avocado Hass.jpg';
+import apple from '../../images/Apple Green Smith.png'
 import MissingProductPopup from '../MissingPopup/MissingPopup';
 import EditPopup from '../EditPopup/EditPopup';
 import {
@@ -88,7 +88,7 @@ const StyledOrders = () => {
     const onAddItem = async () => {
         try {
             await axios.post(`${domain}/products`, {
-                image_url: avacadoImage,
+                image_url: apple,
                 product_name: "Chicken Breast Fillets, Boneless marinated 6 Ounce Raw, Invivid",
                 brand: "Hormel Black Label",
                 price: "65",
