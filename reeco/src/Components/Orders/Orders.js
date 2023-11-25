@@ -6,6 +6,7 @@ import { LuPrinter } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import avacadoImage from '../../images/Avocado Hass.jpg';
+// import apple from '../../images/Apple Green Smith.png'
 import MissingProductPopup from '../MissingPopup/MissingPopup';
 import EditPopup from '../EditPopup/EditPopup';
 import {
@@ -64,37 +65,44 @@ const StyledOrders = () => {
         { id: 6, label: 'Supplier', value: 'East Coast fruits & vegetables' },
     ];
 
+    // Function to add product with default values
+    const onAddItem = async () => {
+        try{
+            await axios.post('http://localhost:9000/create', {
+                image_url: avacadoImage,
+                product_name: "Chicken Breast Fillets, Boneless marinated 6 Ounce Raw, Invivid",
+                brand: "Hormel Black Label",
+                price: "65",
+                quantity: 1,
+                status:''
+            })
+            fetchProducts()
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    // Function to fetch products from the server
     const fetchProducts = async () => {
         try {
             const response = await axios.get('http://localhost:9000/');
-            setProducts(response.data);
+
+            // Assuming response.data is an array of products with a property 'product_id'
+            const sortedData = response.data.sort((a, b) => a.product_id - b.product_id);
+
+            setProducts(sortedData);
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
 
+
+    // useEffect hook to fetch products on component mount
     useEffect(() => {
         fetchProducts();
     }, []);
 
-    const handleEdit = async () => {
-        try {
-            await axios.put(`http://localhost:9000/update/${selectedProduct.product_id}`, { ...editedProduct, status });
-            closePopup();
-            fetchProducts();
-        } catch (error) {
-            console.error('Error updating product:', error);
-        }
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditedProduct((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
+    // Function to open the edit popup and initialize the state
     const openPopup = (product) => {
         setEditedProduct({ price: product.price, quantity: product.quantity });
         setIsMissingProduct(false);
@@ -102,10 +110,12 @@ const StyledOrders = () => {
         setIsPopupOpen(true);
     };
 
+    // Function to close the popup
     const closePopup = () => {
         setIsPopupOpen(false);
     };
 
+    // Function to approve an item
     const onApproveItem = async (id) => {
         try {
             await axios.put(`http://localhost:9000/${id}`, { status: "Approved" });
@@ -115,12 +125,14 @@ const StyledOrders = () => {
         }
     };
 
+    // Function to handle missing item
     const onMissingItem = async (product) => {
         setSelectedProduct(product);
         setIsPopupOpen(true);
         setIsMissingProduct(true);
     };
 
+    // Function to mark an item as missing urgent
     const onYes = async (id) => {
         try {
             await axios.put(`http://localhost:9000/${id}`, { status: "Missing-Urgent" });
@@ -131,6 +143,7 @@ const StyledOrders = () => {
         }
     };
 
+    // Function to mark an item as missing (not urgent)
     const onNotUrgent = async (id) => {
         try {
             await axios.put(`http://localhost:9000/${id}`, { status: "Missing" });
@@ -141,10 +154,45 @@ const StyledOrders = () => {
         }
     };
 
-    const onSelectStatus = (selectedStatus) => {
-        setStatus(selectedStatus);
+    // Function to handle the edit of a product
+    const handleEdit = async () => {
+        try {
+            await axios.put(`http://localhost:9000/update/${selectedProduct.product_id}`, { ...editedProduct, status });
+            closePopup();
+            fetchProducts();
+        } catch (error) {
+            console.error('Error updating product:', error);
+        }
     };
 
+    // Function to handle input change while updating price or quantity
+    const handleInputChange = (e) => {
+        // Determine the status based on changes in price and quantity
+        if (selectedProduct.quantity !== editedProduct.quantity && selectedProduct.price !== editedProduct.price) {
+            setStatus("Price & Quantity updated");
+            console.log("P&Q");
+        } else if (selectedProduct.price !== editedProduct.price) {
+            setStatus("Price updated");
+            console.log("P");
+        } else if (selectedProduct.quantity !== editedProduct.quantity) {
+            setStatus("Quantity updated");
+            console.log("Q");
+        }
+
+        // Update the edited product state
+        const { name, value } = e.target;
+        setEditedProduct((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    // Function to handle Reason selection
+    const onSelectReason = (selectedReson) => {
+       console.log(selectedReson)
+    };
+
+    // Array of reasons for missing items
     const reasons = [
         { id: 1, value: 'Missing product' },
         { id: 2, value: 'Quantity is not the same' },
@@ -152,9 +200,11 @@ const StyledOrders = () => {
         { id: 4, value: 'Other' },
     ];
 
+    // Function to handle search term change
     const onChangeSearchTerm = (e) => {
         setSearchTerm(e.target.value);
     };
+
 
     return (
         <MainOrdersContainer>
@@ -194,7 +244,7 @@ const StyledOrders = () => {
                             <CgSearch style={{ color: `var(--text)` }} size={20} />
                         </SearchInputContainer>
                         <Container className='d-flex align-items-center' style={{gap:"40px"}}>
-                            <BackButton>Add item</BackButton>
+                            <BackButton onClick={onAddItem}>Add item</BackButton>
                             <LuPrinter style={{ color: `var(--background)` }} size={22} />
                         </Container>
                     </Container>
@@ -214,13 +264,13 @@ const StyledOrders = () => {
                             <TableBody>
                                 {products.map((product) => (
                                     <TableRow key={product.product_id}>
-                                        <TableData><StyledImage src={avacadoImage} alt='fruit' /></TableData>
+                                        <TableData><StyledImage src={product.image_url} alt='fruit' /></TableData>
                                         <TableData style={{ width: '280px' }}>{product.product_name}</TableData>
                                         <TableData>{product.brand}</TableData>
                                         <TableData>${product.price}</TableData>
                                         <TableData>{product.quantity}</TableData>
                                         <TableData>${product.quantity * product.price}</TableData>
-                                        <TableData>{product.status !== null && <div className='d-flex align-items-center justify-content-center p-1 m-3'><StatusButton style={{
+                                        <TableData>{product.status !== null && <div className='d-flex align-items-center justify-content-center'><StatusButton style={{
                                             borderRadius: '20px', color: 'white', backgroundColor: product.status === 'Missing-Urgent'
                                                 ? 'red'
                                                 : product.status === 'Missing'
@@ -229,7 +279,13 @@ const StyledOrders = () => {
                                         }}>{product.status}</StatusButton></div>}</TableData>
                                         <TableData>
                                             <StatusContainer>
-                                                <FaCheck style={{ color: product.status === 'Approved' && `var(--light-green)`, cursor: 'pointer' }} onClick={() => onApproveItem(product.product_id)} size={20} />
+                                                <FaCheck style={{
+                                                    color: product.status === 'Missing-Urgent'
+                                                        ? ''
+                                                        : product.status === 'Missing'
+                                                            ? ``
+                                                        : product.status === null || product.status === '' ? ''
+                                                            : `var(--light-green)`, cursor: 'pointer' }} onClick={() => onApproveItem(product.product_id)} size={20} />
                                                 <IoClose
                                                     style={{
                                                         cursor: 'pointer',
@@ -271,7 +327,7 @@ const StyledOrders = () => {
                                 editedProduct={editedProduct}
                                 handleInputChange={handleInputChange}
                                 handleEdit={handleEdit}
-                                onSelectStatus={onSelectStatus}
+                                onSelectReason={onSelectReason}
                                 reasons={reasons}
                             />
                         )}

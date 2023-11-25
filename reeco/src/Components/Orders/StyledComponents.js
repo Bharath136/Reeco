@@ -64,7 +64,13 @@ export const BackButton = styled(StyledButton)`
   border: 1px solid var(--background);
   background-color: white;
   color: var(--background);
+
+  &:hover {
+    background-color: green;
+    color:while;
+  }
 `;
+
 
 export const ApproveOrderButton = styled(StyledButton)`
   background-color: var(--background);
@@ -118,10 +124,10 @@ export const OrderItemsTable = styled.table`
 `;
 
 export const OrderItemsTableHead = styled.thead`
-    border:1px solid var(--border);
-    border-radius:8px;
+    borderRadius:30px;
+    border:2px solid var(--border);
   tr {
-    border-top: 1px solid var(--border);
+    ${'' /* border-top: 1px solid var(--border); */}
   }
 
   th {
@@ -148,7 +154,7 @@ export const TableRow = styled.tr`
 `
 
 export const StyledImage = styled.img`
-  width: 80px;
+  width: 50px;
 `;
 
 export const StatusContainer = styled.div`
@@ -163,27 +169,29 @@ export const StyledEditButton = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
+  color:var(--text);
 `;
 
 export const SearchInputContainer = styled.div`
   border: 1px solid var(--border);
-  width: 300px;
+  width: 380px;
   display: flex;
   align-items: center;
   border-radius: 30px;
   @media screen and (max-width: 768px) {
-    width:200px;
+    width:180px;
   }
 `;
 
 export const StyledSearchInput = styled.input`
-  width: 86%;
-  padding: 10px;
+  width: 90%;
+  padding: 8px 14px;
   border: none;
   outline: none;
   border-radius: 30px;
   @media screen and (max-width: 768px) {
-    padding: 6px 12px;
+    width: 86%;
+    padding: 3px 12px;
   }
 `;
 
@@ -218,7 +226,7 @@ export const PopupContent = styled.div`
 
 
 export const StatusButton = styled.button`
-outline: none;
+  outline: none;
   border: none;
   cursor: pointer;
   padding: 2px 14px;
@@ -226,15 +234,16 @@ outline: none;
   font-size:15px;
 `
 
-
-
-
 export const TableBody = styled.tbody`
+
 `
 
 export const TableHead = styled.th`
+  color:var(--text);
+  
 `
 
 export const TableData = styled.td`
-
+  padding: 10px 0px;
+  color:var(--text);
 `

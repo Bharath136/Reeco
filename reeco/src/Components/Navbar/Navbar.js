@@ -14,32 +14,32 @@ const ShoppingCartIcon = styled(TfiShoppingCart)`
 const Navbar = () => {
     return (
         <NavContainer>
-            <nav class="container navbar navbar-expand-lg " style={{color:'white',padding:'10px'}}>
-                <h5 class="navbar-brand" style={{ color: 'white' }} to="#">Reeco</h5>
-                <button style={{ color: 'white' }} class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+            <nav className="container navbar navbar-expand-lg " style={{color:'white',padding:'10px'}}>
+                <h3  style={{ color: 'white', marginRight:'50px'}} >Reeco</h3>
+                <button style={{ color: 'white' }} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className='d-flex justify-content-between align-items-center w-100'>
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item nav-link active" style={{ color: 'white' }}>
+                        <ul className="navbar-nav" >
+                            <li className="nav-item nav-link active" style={{ color: 'white',marginRight:'40px' }}>
                                 Store
                             </li>
-                            <li class="nav-item nav-link active" style={{ color: 'white' }}>
+                            <li className="nav-item nav-link active" style={{ color: 'white', marginRight: '40px' }}>
                                 Orders
                             </li>
 
-                            <li class="nav-item nav-link active" style={{ color: 'white' }}>
+                            <li className="nav-item nav-link active" style={{ color: 'white' }}>
                                 Analytics
                             </li>
                         </ul>
                         <div className='d-flex' style={{gap:"50px"}}>
-                            <li class="nav-item nav-link active" style={{ color: 'white' }}>
+                            <li className="nav-item nav-link active" style={{ color: 'white' }}>
                                 <ShoppingCartIcon size={25} />
                             </li>
 
-                            <li class="nav-item nav-link active" style={{ color: 'white' }}>
+                            <li className="nav-item nav-link active" style={{ color: 'white' }}>
                                 Hello, James <IoIosArrowDown style={{ marginTop: '4px' }} size={16} />
                             </li>
                         </div>

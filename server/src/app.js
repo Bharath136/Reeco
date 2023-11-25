@@ -87,11 +87,11 @@ app.put('/update/:id', async (req, res) => {
 
 
 // Delete a product
-app.delete('/:id', async (req, res) => {
+app.delete('/', async (req, res) => {
     const { id } = req.params;
     try {
-        await client.query('DELETE FROM products WHERE id = $1', [id]);
-        res.send('Product deleted successfully');
+        await client.query('DELETE FROM products ');
+        res.send('Products deleted successfully');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
