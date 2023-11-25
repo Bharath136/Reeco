@@ -207,6 +207,34 @@ const StyledOrders = () => {
     };
 
 
+    const onIncreaseQuantity = () => {
+        console.log("ljlk")
+        setEditedProduct((prevProduct) => {
+            // Assuming editedProduct is an object and quantity is a number
+            return {
+                ...prevProduct,
+                quantity: prevProduct.quantity + 1,
+            };
+        });
+    };
+
+    const onDecreaseQuantity = () => {
+        setEditedProduct((prevProduct) => {
+            // Assuming editedProduct is an object and quantity is a number
+            if (prevProduct.quantity > 1) {
+                return {
+                    ...prevProduct,
+                    quantity: prevProduct.quantity - 1,
+                };
+            } else {
+                // Prevent quantity from going below 1
+                return prevProduct;
+            }
+        });
+    };
+
+
+
     return (
         <MainOrdersContainer>
             <OrdersWrapper>
@@ -322,6 +350,7 @@ const StyledOrders = () => {
                                 onNotUrgent={onNotUrgent}
                                 onYes={onYes}
                                 selectedProduct={selectedProduct}
+                                
                             />
                         ) : (
                             <EditPopup
@@ -332,6 +361,8 @@ const StyledOrders = () => {
                                 handleEdit={handleEdit}
                                 onSelectReason={onSelectReason}
                                 reasons={reasons}
+                                    onIncrease={onIncreaseQuantity}
+                                    onDecrease={onDecreaseQuantity}
                             />
                         )}
                     </PopupContent>

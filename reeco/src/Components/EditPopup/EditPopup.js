@@ -26,6 +26,8 @@ const EditPopup = ({
     handleEdit,
     onSelectStatus,
     reasons,
+    onDecrease,
+    onIncrease
 }) => {
     return (
         <div>
@@ -48,11 +50,11 @@ const EditPopup = ({
                 <div className='d-flex flex-column align-items-center'>
                     <PopupInput name='price' value={editedProduct.price} onChange={handleInputChange} />
                     <div className='d-flex align-items-center' style={{ gap: '10px' }}>
-                        <MinusButton>
-                            <FaMinus size={20} />
+                        <MinusButton onClick={onDecrease}>
+                            <FaMinus  size={20} />
                         </MinusButton>
                         <PopupInput name='quantity' value={editedProduct.quantity} onChange={handleInputChange} />
-                        <PlusButton>
+                        <PlusButton onClick={onIncrease}>
                             <FaPlus size={20} />
                         </PlusButton>
                     </div>
