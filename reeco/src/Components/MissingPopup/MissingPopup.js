@@ -10,8 +10,8 @@ const MissingProductPopup = ({ closePopup, onNotUrgent, onYes, selectedProduct }
             <h4>Missing Product</h4>
             <p>Is 'Chicken Breast Fillets, Bonless...' Urgent?</p>
             <div>
-                <CancelButton onClick={() => onNotUrgent(selectedProduct.product_id)}>No</CancelButton>
-                <SendButton onClick={() => onYes(selectedProduct.product_id)}>Yes</SendButton>
+                <CancelButton onClick={() => onNotUrgent(selectedProduct._id)}>No</CancelButton>
+                <SendButton onClick={() => onYes(selectedProduct._id)}>Yes</SendButton>
             </div>
         </div>
     );

@@ -1,103 +1,90 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const port = 9000;
 const client = require('../src/database/connection');
+const models = require("./models/schema");
 
 app.use(express.json());
 app.use(cors())
 
-// const app = express.app();
-// Get all products
-app.get('/', async (req, res) => {
-    try {
-        const { rows } = await client.query('SELECT * FROM products');
-        res.json(rows);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// Get a single product
-app.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const { rows } = await client.query('SELECT * FROM products WHERE id = $1', [id]);
-        res.json(rows[0]);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-});
 
 // Create a new product
-app.post('/create', async (req, res) => {
-    const { image_url, product_name, brand, price, quantity } = req.body;
-
+app.post('/products', async (req, res) => {
     try {
-        const { rows } = await client.query(
-            'INSERT INTO products (image_url, product_name, brand, price, quantity) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [image_url, product_name, brand, price, quantity]
+        const product = new models.Product(req.body);
+        await product.save();
+        res.status(201).send(product);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+// Get all products
+app.get('/products', async (req, res) => {
+    try {
+        const products = await models.Product.find();
+        res.send(products);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Get a single product by ID
+app.get('/products/:id', async (req, res) => {
+    try {
+        const product = await models.Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).send({ error: 'Product not found' });
+        }
+        res.send(product);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+
+// Update the status of a product by ID
+app.put('/products/:id/', async (req, res) => {
+    try {
+        const { status } = req.body;
+        // Check if the request contains the 'status' field
+        if (!status) {
+            return res.status(400).send({ error: 'Status field is required for updating' });
+        }
+
+        const product = await models.Product.findByIdAndUpdate(
+            req.params.id,
+            { $set: { status } },
+            { new: true }
         );
-        res.json(rows[0]);
+
+        if (!product) {
+            return res.status(404).send({ error: 'Product not found' });
+        }
+
+        res.send(product);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.status(400).send(error);
     }
 });
 
-
-// Update a product
-app.put('/:id', async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
+// Delete a product by ID
+app.delete('/products/:id', async (req, res) => {
     try {
-        const { rows } = await client.query(
-            'UPDATE products SET status = $1 WHERE product_id = $2 RETURNING *',
-            [status, id]
-        );
-        res.json(rows[0]);
+        const product = await models.Product.findByIdAndDelete(req.params.id);
+        if (!product) {
+            return res.status(404).send({ error: 'Product not found' });
+        }
+        res.send(product);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send(error);
     }
 });
 
-
-// Update a product
-app.put('/update/:id', async (req, res) => {
-    const { id } = req.params;
-    const { price, quantity, status } = req.body;
-    try {
-        const { rows } = await client.query(
-            'UPDATE products SET price = $1, quantity = $2, status = $3 WHERE product_id = $4 RETURNING *',
-            [price, quantity, status, id]
-        );
-        res.json(rows[0]);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-
-
-
-
-// Delete a product
-app.delete('/', async (req, res) => {
-    const { id } = req.params;
-    try {
-        await client.query('DELETE FROM products ');
-        res.send('Products deleted successfully');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+
