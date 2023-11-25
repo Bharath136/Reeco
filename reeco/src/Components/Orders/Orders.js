@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import LoadingOverlay from 'react-loading-overlay';
+import Swal from 'sweetalert2';
+
 import axios from 'axios';
 import { GoChevronRight } from "react-icons/go";
 import { CgSearch } from "react-icons/cg";
@@ -50,11 +53,12 @@ const StyledOrders = () => {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [isMissingProduct, setIsMissingProduct] = useState(false);
     const [status, setStatus] = useState('');
+    const [loading, setLoading] = useState(false)
 
     const [editedProduct, setEditedProduct] = useState({
         price: selectedProduct.price,
         quantity: selectedProduct.quantity,
-        status: '',
+        status: selectedProduct.status,
     });
 
     const orderDetailBoxes = [
@@ -65,6 +69,20 @@ const StyledOrders = () => {
         { id: 5, label: 'Supplier', value: 'East Coast fruits & vegetables' },
         { id: 6, label: 'Supplier', value: 'East Coast fruits & vegetables' },
     ];
+
+    const showSweetAlert = () => {
+        Swal.fire({
+            title: 'Loading...',
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+                Swal.showLoading();
+            },
+        });
+    };
+
+    const hideSweetAlert = () => {
+        Swal.close();
+    };
 
     // Function to add product with default values
     const onAddItem = async () => {
@@ -85,9 +103,12 @@ const StyledOrders = () => {
 
     // Function to fetch products from the server
     const fetchProducts = async () => {
+        setLoading(true)
         try {
             const response = await axios.get(`${domain}/products`);
-
+            if(response.status === 200){
+                setLoading(false)
+            }
             // Assuming response.data is an array of products with a property '_id'
             // const sortedData = response.data.sort((a, b) => a._id - b._id);
 
@@ -100,6 +121,7 @@ const StyledOrders = () => {
 
     // useEffect hook to fetch products on component mount
     useEffect(() => {
+        
         fetchProducts();
     }, []);
 
@@ -117,9 +139,10 @@ const StyledOrders = () => {
     };
 
     // Function to approve an item
-    const onApproveItem = async (id) => {
+    const onApproveItem = async (product) => {
+        // console.log(selectedProduct)
         try {
-            await axios.put(`${domain}/products/${id}`, {...editedProduct, status: "Approved" });
+            await axios.put(`${domain}/products/${product._id}`, {...product, status: "Approved" });
             fetchProducts();
         } catch (error) {
             console.error('Error approving item:', error);
@@ -136,7 +159,7 @@ const StyledOrders = () => {
     // Function to mark an item as missing urgent
     const onYes = async (id) => {
         try {
-            await axios.put(`${domain}/products/${id}`, { ...editedProduct, status: "Missing-Urgent" });
+            await axios.put(`${domain}/products/${id}`, { ...selectedProduct, status: "Missing-Urgent" });
             fetchProducts();
             closePopup();
         } catch (error) {
@@ -147,7 +170,7 @@ const StyledOrders = () => {
     // Function to mark an item as missing (not urgent)
     const onNotUrgent = async (id) => {
         try {
-            await axios.put(`${domain}/products/${id}`, { ...editedProduct, status: "Missing" });
+            await axios.put(`${domain}/products/${id}`, { ...selectedProduct, status: "Missing" });
             fetchProducts();
             closePopup();
         } catch (error) {
@@ -279,7 +302,47 @@ const StyledOrders = () => {
                             <LuPrinter style={{ color: `var(--background)` }} size={22} />
                         </Container>
                     </Container>
-                    <ProductsContainer>
+                    {loading ? <LoadingOverlay
+                        active={loading}
+                        spinner
+                        text="Loading..."
+                        onClick={() => setLoading(false)}
+                        styles={{
+                            wrapper: {
+                                position: 'fixed',
+                                height: '100vh',
+                                width: '100vw',
+                                top: 0,
+                                left: 0,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                zIndex: 9999,
+                            },
+                            overlay: (base) => ({
+                                ...base,
+                                background: '#e8e8e8',
+                            }),
+                            content: (base) => ({
+                                ...base,
+                                color: 'var(--accent-background)',
+                            }),
+                            spinner: (base) => ({
+                                ...base,
+                                '& svg circle': {
+                                    stroke: 'var(--accent-background)', // Modify this line to change the spinner color
+                                },
+                            }),
+                        }}
+                        className="your-custom-class"
+                        fadeSpeed={1000}
+                    >
+                        {loading && showSweetAlert()}
+                        <div>
+                            <h1>Your Content Here</h1>
+                        </div>
+                        {loading && hideSweetAlert()}
+                    </LoadingOverlay> :<ProductsContainer>
                         <OrderItemsTable >
                             <OrderItemsTableHead>
                                 <TableRow>
@@ -318,7 +381,7 @@ const StyledOrders = () => {
                                                             ? ``
                                                             : product.status === null || product.status === '' ? ''
                                                                 : `var(--light-green)`, cursor: 'pointer'
-                                                }} onClick={() => onApproveItem(product._id)} size={20} />
+                                                }} onClick={() => onApproveItem(product)} size={20} />
                                                 <IoClose
                                                     style={{
                                                         cursor: 'pointer',
@@ -338,7 +401,7 @@ const StyledOrders = () => {
                                 ))}
                             </TableBody>
                         </OrderItemsTable>
-                    </ProductsContainer>
+                    </ProductsContainer>}
                 </OrderProductsWrapper>
             </OrderItemsContainer>
 
